@@ -1,0 +1,10 @@
+.puzzle{
+  width: 600px;
+  height: 600px;
+  position: relative;
+}
+
+.puzzle div{
+  background: url("./static/bg.jpeg");
+  position: absolute;
+}
