@@ -10,7 +10,8 @@ class App extends Component {
             {difficulty: 0, map: '3x3', width: 190},
             {difficulty: 1, map: '4x4', width: 140},
         ],
-        map: []
+        map: [],
+        success:false,
     };
 
     componentDidMount() {
@@ -18,7 +19,7 @@ class App extends Component {
     }
 
     setDifficulty(difficulty) {
-        this.setState({difficulty,map:[]});
+        this.setState({difficulty,map:[],success:false});
         this.gameMap();
     }
 
@@ -40,7 +41,10 @@ class App extends Component {
     }
 
     move(ele) {
-        const {map, options, difficulty} = this.state;
+        const {map, options, difficulty,success} = this.state;
+        if (success){
+            return;
+        }
         const opt = options[difficulty];
         const [X, Y] = opt.map.split('x');
         const [x, y] = ele.seed.split('');
@@ -53,11 +57,25 @@ class App extends Component {
                 }
             }
         });
+        this.success(map);
         this.setState({map})
     }
 
+    success(map){
+        let success = map.reduce((pre,cur)=>{
+            if (!pre){
+                return false;
+            }
+            const origin = cur.origin;
+            const seed = cur.seed.split('');
+            return origin[0]==seed[0]&&origin[1]==seed[1];
+        },true);
+        this.setState({success})
+
+    }
+
     renderPuzzle() {
-        const {difficulty, options, map} = this.state;
+        const {difficulty, options, map,success} = this.state;
         const opt = options[difficulty];
         const width = opt.width;
         const [_X, _Y] = opt.map.split('x');
@@ -72,7 +90,7 @@ class App extends Component {
                         backgroundPosition: `${-X * width}px ${-Y * width}px`,
                         left: `${x * (width + 10)}px`,
                         top: `${y * (width + 10)}px`,
-                        display: `${(X == _X - 1 && Y == _Y - 1) ? 'none' : 'block'}`
+                        display: `${(X == _X - 1 && Y == _Y - 1)&&!success ? 'none' : 'block'}`
                     };
                     return <div style={style} onClick={e => this.move(ele)} key={index}></div>
                 }))}
