@@ -146,7 +146,7 @@ class App extends Component {
                         backgroundImage:`url(${imageUrl})`,
                         opacity: `${(X == _X - 1 && Y == _Y - 1)&&!success ? '0' : '1'}`
                     };
-                    return <div style={style} onClick={e => this.move(ele)} key={index}></div>
+                    return <div id={ele.origin.join('')} style={style} onClick={e => this.move(ele)} key={index}></div>
                 }))}
             </div>
         )
