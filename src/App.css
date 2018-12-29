@@ -6,11 +6,54 @@
 }
 
 .puzzle div{
-  background: url("./static/bg.jpeg");
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
   position: absolute;
+}
+.controls{
+  margin-top: 10px;
+}
+.controls button{
+  margin-left: 10px;
+}
+.controls button:first-child{
+  margin: 0;
+}
+.image-div{
+  width: 600px;
+  height: 40px;
+  margin: 10px auto;
+}
+.image-div div{
+  float: left;
+  margin-left: 10px;
+  line-height: 40px;
+  height: 40px;
+}
+.image-div input{
+  margin-right: 10px;
+  height: 26px;
+  border: 0;
+  background-color: transparent;
+  width: 300px;
+  float: right;
+  outline: none;
+  padding:10px;
+  -webkit-box-shadow: 1px 2px 10px 0 #777777;
+  -moz-box-shadow: 1px 2px 10px 0 #777777;
+  box-shadow: 1px 2px 10px 0 #777777;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.image-div input:focus{
+  -webkit-box-shadow: 1px 2px 15px 0 #444444;
+  -moz-box-shadow: 1px 2px 15px 0 #444444;
+  box-shadow: 1px 2px 15px 0 #444444;
 }

@@ -1,16 +1,27 @@
 import React, {Component} from 'react';
 import './App.css';
+import bg0 from './static/bg.jpeg'
+import bg1 from './static/bg1.jpeg'
+import bg2 from './static/bg2.jpeg'
+
+
 
 const width = 600;
 const border = 0;
+const imageUrls = [bg0,bg1,bg2];
+
 class App extends Component {
     state = {
         step: 0,
-        imageUrl: '',
-        difficulty: 0,
+        imageUrl: bg0,
+        imageUrlBak: bg0,
+        difficulty:0,
         options: [
             {difficulty: 0, map: '3x3', width: width/3-border},
             {difficulty: 1, map: '4x4', width: width/4-border},
+            {difficulty: 2, map: '5x5', width: width/5-border},
+            {difficulty: 3, map: '6x6', width: width/6-border},
+            {difficulty: 4, map: '10x10', width: width/10-border},
         ],
         map: [],
         success:false,
@@ -18,6 +29,10 @@ class App extends Component {
 
     componentDidMount() {
         this.gameMap();
+    }
+    setDefault(num){
+        const imageUrl = imageUrls[num];
+        this.setState({imageUrl,imageUrlBak:imageUrl})
     }
 
     setDifficulty(difficulty) {
@@ -104,9 +119,16 @@ class App extends Component {
         this.setState({success})
 
     }
+    setUrl(){
+        const {imageUrlBak} = this.state;
+        this.setState({imageUrl:imageUrlBak});
+    }
+    changeUrl(e){
+        this.setState({imageUrlBak:e.target.value})
+    }
 
     renderPuzzle() {
-        const {difficulty, options, map,success} = this.state;
+        const {difficulty, options, map,success,imageUrl} = this.state;
         const opt = options[difficulty];
         const width = opt.width;
         const [_X, _Y] = opt.map.split('x');
@@ -121,6 +143,7 @@ class App extends Component {
                         backgroundPosition: `${-X * width}px ${-Y * width}px`,
                         left: `${x * (width + border)}px`,
                         top: `${y * (width + border)}px`,
+                        backgroundImage:`url(${imageUrl})`,
                         opacity: `${(X == _X - 1 && Y == _Y - 1)&&!success ? '0' : '1'}`
                     };
                     return <div style={style} onClick={e => this.move(ele)} key={index}></div>
@@ -131,17 +154,27 @@ class App extends Component {
 
 
     render() {
-        const {map,success,step} = this.state;
+        const {map,success,step,imageUrlBak} = this.state;
         return (
             <div className="App">
                 {map&&map.length>0?this.renderPuzzle():null}
                 <div className="controls">
                     <button onClick={e=>this.setDifficulty(0)}>重开</button>
-                    {success?
-                        <div>恭喜成功过关!共用{step}步!</div>
-                        :
-                        <div>已使用{step}步!</div>
-                    }
+                    <button onClick={e=>this.setDefault(0)}>图像1</button>
+                    <button onClick={e=>this.setDefault(1)}>图像2</button>
+                    <button onClick={e=>this.setDefault(2)}>图像3</button>
+                    <button onClick={e=>this.setUrl()}>设置图像地址</button>
+                    <div className="image-div">
+                        <input onChange={e=>this.changeUrl(e)} value={imageUrlBak}/>
+                        <div>
+                            {success?
+                                <span>恭喜成功过关!共用{step}步!</span>
+                                :
+                                <span>已使用{step}步!</span>
+                            }
+                        </div>
+                    </div>
+
                 </div>
             </div>
         );
