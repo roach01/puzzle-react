@@ -19,7 +19,7 @@ class App extends Component {
     }
 
     setDifficulty(difficulty) {
-        this.setState({difficulty,map:[],success:false});
+        this.setState({difficulty,map:[],success:false,step:0});
         this.gameMap();
     }
 
@@ -42,6 +42,7 @@ class App extends Component {
 
     move(ele) {
         const {map, options, difficulty,success} = this.state;
+        let {step} = this.state;
         if (success){
             return;
         }
@@ -54,11 +55,12 @@ class App extends Component {
                 if ((x == invisibleX || y == invisibleY) && (Math.abs(x - invisibleX) == 1 || Math.abs(y - invisibleY) == 1)) {
                     ele.seed = [invisibleX, invisibleY].join('');
                     current.seed = [x,y].join('');
+                    step++;
                 }
             }
         });
         this.success(map);
-        this.setState({map})
+        this.setState({map,step})
     }
 
     success(map){
@@ -100,11 +102,18 @@ class App extends Component {
 
 
     render() {
-        const {map} = this.state;
+        const {map,success,step} = this.state;
         return (
             <div className="App">
                 {map&&map.length>0?this.renderPuzzle():null}
-                <button onClick={e=>this.setDifficulty(0)}>3x3</button>
+                <div className="controls">
+                    <button onClick={e=>this.setDifficulty(0)}>重开</button>
+                    {success?
+                        <div>恭喜成功过关!共用{step}步!</div>
+                        :
+                        <div>已使用{step}步!</div>
+                    }
+                </div>
             </div>
         );
     }

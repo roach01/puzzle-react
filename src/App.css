@@ -2,6 +2,7 @@
   width: 600px;
   height: 600px;
   position: relative;
+  margin: auto;
 }
 
 .puzzle div{
