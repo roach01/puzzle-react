@@ -43,7 +43,7 @@ class App extends Component {
 
 
     createLevel(map){
-        this.createMove(map,null,100);
+        this.createMove(map,null,200);
     }
 
     createMove(map,lastEle,times){
