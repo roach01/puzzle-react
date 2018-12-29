@@ -35,14 +35,40 @@ class App extends Component {
                 seed.push(`${i}${j}`);
             }
         }
-        seed.sort(() => Math.random() - 0.5);
+        //seed.sort(() => Math.random() - 0.5);
         map = map.map((e, index) => ({...e, seed: seed[index]}));
+        this.createLevel(map);
         this.setState({map});
+    }
+
+
+    createLevel(map){
+        this.createMove(map,null,100);
+    }
+
+    createMove(map,lastEle,times){
+        if (times==0){
+            return;
+        }
+        times--;
+        const blank = map[map.length-1];
+
+        const [blankX,blankY] = blank.seed.split('').map(e=>Number(e));
+        const nearby = [`${blankX+1}${blankY}`,`${blankX-1}${blankY}`,`${blankX}${blankY+1}`,`${blankX}${blankY-1}`];
+        const nearbyEle = map.filter(ele=>{
+            return nearby.indexOf(ele.seed)!=-1&&(!lastEle||ele.seed!=lastEle.seed);
+        });
+        const moveEle = nearbyEle[Math.floor(Math.random()*nearbyEle.length)];
+        const [x,y] = moveEle.seed.split('');
+        moveEle.seed = [blankX, blankY].join('');
+        blank.seed = [x,y].join('');
+        this.createMove(map,moveEle,times);
     }
 
     move(ele) {
         const {map, options, difficulty,success} = this.state;
         let {step} = this.state;
+        const self = this;
         if (success){
             return;
         }
@@ -56,11 +82,12 @@ class App extends Component {
                     ele.seed = [invisibleX, invisibleY].join('');
                     current.seed = [x,y].join('');
                     step++;
+                    self.success(map);
+                    self.setState({map,step})
                 }
             }
         });
-        this.success(map);
-        this.setState({map,step})
+
     }
 
     success(map){
