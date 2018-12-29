@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import './App.css';
 
+const width = 600;
+const border = 0;
 class App extends Component {
     state = {
         step: 0,
         imageUrl: '',
         difficulty: 0,
         options: [
-            {difficulty: 0, map: '3x3', width: 190},
-            {difficulty: 1, map: '4x4', width: 140},
+            {difficulty: 0, map: '3x3', width: width/3-border},
+            {difficulty: 1, map: '4x4', width: width/4-border},
         ],
         map: [],
         success:false,
@@ -117,9 +119,9 @@ class App extends Component {
                         width: `${width}px`,
                         height: `${width}px`,
                         backgroundPosition: `${-X * width}px ${-Y * width}px`,
-                        left: `${x * (width + 10)}px`,
-                        top: `${y * (width + 10)}px`,
-                        display: `${(X == _X - 1 && Y == _Y - 1)&&!success ? 'none' : 'block'}`
+                        left: `${x * (width + border)}px`,
+                        top: `${y * (width + border)}px`,
+                        opacity: `${(X == _X - 1 && Y == _Y - 1)&&!success ? '0' : '1'}`
                     };
                     return <div style={style} onClick={e => this.move(ele)} key={index}></div>
                 }))}
